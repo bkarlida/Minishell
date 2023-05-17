@@ -1,4 +1,4 @@
-SRCS		=		minishell.c lst_func.c
+SRCS		=		minishell.c lst_func.c parser.c utils.c
 
 LIBFT		=		-I./libft
 

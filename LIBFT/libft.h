@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 15:56:52 by bkarlida          #+#    #+#             */
-/*   Updated: 2022/11/01 01:05:37 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/17 09:08:48 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int			ft_isalpha(int a);
 int			ft_isascii(int a);
 int			ft_isdigit(int a);
 int			ft_isprint(int a);
-int			ft_tolower(int c);
+char		*ft_tolower(char *str);
 int			ft_toupper(int c);
 int			ft_atoi(const char *str);
 char		*ft_itoa(int n);

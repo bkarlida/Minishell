@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: burakkarlidag <burakkarlidag@student.42    +#+  +:+       +#+        */
+/*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:37:26 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/05/13 07:39:18 by burakkarlid      ###   ########.fr       */
+/*   Updated: 2023/05/17 19:39:24 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <fcntl.h>
 # include <signal.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -24,29 +25,35 @@
 typedef struct z_list
 {
 	char			*content;
-	char			flag;
-	int				extra_flag;
+	char			flag;// pipe rdirect ve tırnak varsa gösterir yoksa 'b' yazar
+	int				extra_flag;//kullanım dışı
 	struct z_list	*next;
 }					link_list;
 
 struct s_var
 {
-	int		lparse_int_value;
+	int		lparse_int_value;//beklemede
 	link_list	*lst;
-	char	quot_flag;
-	char	*cont;
-	char	rdr_flag;
-	int		extra_rdr_flag;
-	int		error_flag;
+	char	quot_flag;// tırnak flagleri
+	char	*cont; // parser kısmında kullanılan geçici değişken
+	char	rdr_flag;//oluşturulan listelere flag ataması yapılır
+	int		extra_rdr_flag;//beklemede
+	//int		error_flag;//kullanım dışı
+	int		lst_size; // parserdan sonra oluşan listenin uzunluğu
+	char	**str; // bütün lst->contentlerinin toplandığı double array
+	char	**b_str;// kullanım dışı
 }	g_var;
 
-int	start_parser(char *line);
-char	**ft_split(char const *s, char c);
-void	link_lstadd_back(link_list **lst, link_list *new);
-void	link_lstclear(link_list **lst);
-void	link_lstdelone(link_list *lst);
+void		start_parser(char *line);
+int			strequal(char *str, char *ptr); // özel fonksiyon
+void		quot_parser(char *line, int *i);
+void		rdr_parser(char *line, int *i);
+void		consecutive_rdr_parser(char *line, int *i);
+void		link_lstadd_back(link_list **lst, link_list *new);
+void		link_lstclear(link_list **lst);
+void		link_lstdelone(link_list *lst);
 link_list	*link_lstlast(link_list *lst);
 link_list	*link_lstnew(char *content, char flag);
-int	link_lstsize(link_list *lst);
+int			link_lstsize(link_list *lst);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_func.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: burakkarlidag <burakkarlidag@student.42    +#+  +:+       +#+        */
+/*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 17:05:56 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/05/13 07:39:44 by burakkarlid      ###   ########.fr       */
+/*   Updated: 2023/05/17 07:44:31 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ void	link_lstclear(link_list **lst)
 	link_list	*tmp;
 
 	if (!lst)
+	{
 		return ;
+	}
 	while (*lst != NULL)
 	{
 		tmp = (*lst)->next;
