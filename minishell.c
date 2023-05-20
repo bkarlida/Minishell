@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:31:42 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/05/17 19:43:53 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/20 17:43:14 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	Command_Prepare(void)
 		g_var.str[i++] = tmp->content;
 		tmp = tmp->next;
 	}
-	g_var.str[i] = 0;
+	g_var.str[i] = NULL;
 	i = 0;
 	while (g_var.str[i])
 	{	printf("--------\n");
@@ -82,16 +82,31 @@ int	ft_echo_is_null(char *str)
 	int i;
 
 	i = 0;
-	if (str[i] == '-')
+	printf("%c\n", str[i]);
+	perror("aaujghskjfhag");
+	if (!str[i])
+	{
+
+		perror("qqqqqqqqqq");
+		return(0);
+	}
+	else if (str[i] == '-')
 		i++;
 	else
+	{
+		perror("ssafsadgseghsdh");
 		return(0);	
+	}
 	while (str[i])
 	{
-		if (str[i] != 'n' && !str[i])
+		printf("**********%c**********\n", str[i]);
+		if (str[i] != 'n')
 		{
-			return(0);
+		perror("--------");
+			if (str[i])
+				return(0);
 		}
+		perror("zzzzzzzzz");
 		i++;
 	}
 	return(1);
@@ -100,18 +115,34 @@ int	ft_echo_is_null(char *str)
 void	ft_echo(int	k)
 {
 	int flag;
+	int v_flag;
 
-	flag = 1;
+	flag = 0;
+	v_flag = 0;
 	k++;
+	printf("%s\n", g_var.str[k]);
 	printf("-------Echo_komutu_çalıştı!------\n");
+	while (ft_echo_is_null(g_var.str[k]))
+	{
+		k++;
+		flag = 1;
+		v_flag = 0;
+		if (g_var.str[k])
+		{
+			break;
+		}
+		
+	}
 	while (g_var.str[k])
 	{
-		if (ft_echo_is_null(g_var.str[k]))
-					flag = 0;
+		//perror("aaaaaaaa");
+		//printf("%s\n", g_var.str[k]);
+		
 		if (g_var.str[k][0] != '|' && g_var.str[k][0] != '<' && g_var.str[k][0] != '>')
 		{
 			printf("%s", g_var.str[k]);
 			printf(" ");
+			flag = 0;
 			k++;
 		}
 		else
@@ -124,7 +155,7 @@ void	ft_echo(int	k)
 			k++;
 		}
 	}
-	if (flag)
+	if (v_flag)
 		printf("\n");
 }
 void	Command_Building(void)
