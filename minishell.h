@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:37:26 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/05/17 19:39:24 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:15:04 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,17 @@ struct s_var
 	int		lst_size; // parserdan sonra oluşan listenin uzunluğu
 	char	**str; // bütün lst->contentlerinin toplandığı double array
 	char	**b_str;// kullanım dışı
+	char	**env; // mainden env çekildi
+	int		env_size; // envsize
+	//char	*pwd;
 }	g_var;
 
 void		start_parser(char *line);
+void    	ft_unset(char *str);
+void		ft_pwd(void);
+int			ft_echo_is_null(char *str);
+void		ft_echo(int	k);
+int			command_built(void);
 int			strequal(char *str, char *ptr); // özel fonksiyon
 void		quot_parser(char *line, int *i);
 void		rdr_parser(char *line, int *i);
@@ -55,5 +63,7 @@ void		link_lstdelone(link_list *lst);
 link_list	*link_lstlast(link_list *lst);
 link_list	*link_lstnew(char *content, char flag);
 int			link_lstsize(link_list *lst);
+int			cd_func(int i);
+char 	   *cut_helper_test(const char *str);
 
 #endif

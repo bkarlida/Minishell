@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:31:42 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/05/20 17:43:14 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/24 16:55:02 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	start_parser(char *line)
 }
 
 
-void	Command_Prepare(void)
+void	command_prepare(void)
 {
 	link_list	*tmp;
 	int i;
@@ -70,138 +70,29 @@ void	Command_Prepare(void)
 	g_var.str[i] = NULL;
 	i = 0;
 	while (g_var.str[i])
-	{	printf("--------\n");
-		printf("%s\n", g_var.str[i++]);
-		printf("--------\n");
+	{	
+		printf("******%s******\n", g_var.str[i++]);
 	}
 	
 }
 
-int	ft_echo_is_null(char *str)
-{
-	int i;
-
-	i = 0;
-	printf("%c\n", str[i]);
-	perror("aaujghskjfhag");
-	if (!str[i])
-	{
-
-		perror("qqqqqqqqqq");
-		return(0);
-	}
-	else if (str[i] == '-')
-		i++;
-	else
-	{
-		perror("ssafsadgseghsdh");
-		return(0);	
-	}
-	while (str[i])
-	{
-		printf("**********%c**********\n", str[i]);
-		if (str[i] != 'n')
-		{
-		perror("--------");
-			if (str[i])
-				return(0);
-		}
-		perror("zzzzzzzzz");
-		i++;
-	}
-	return(1);
-}
-
-void	ft_echo(int	k)
-{
-	int flag;
-	int v_flag;
-
-	flag = 0;
-	v_flag = 0;
-	k++;
-	printf("%s\n", g_var.str[k]);
-	printf("-------Echo_komutu_çalıştı!------\n");
-	while (ft_echo_is_null(g_var.str[k]))
-	{
-		k++;
-		flag = 1;
-		v_flag = 0;
-		if (g_var.str[k])
-		{
-			break;
-		}
-		
-	}
-	while (g_var.str[k])
-	{
-		//perror("aaaaaaaa");
-		//printf("%s\n", g_var.str[k]);
-		
-		if (g_var.str[k][0] != '|' && g_var.str[k][0] != '<' && g_var.str[k][0] != '>')
-		{
-			printf("%s", g_var.str[k]);
-			printf(" ");
-			flag = 0;
-			k++;
-		}
-		else
-		{
-			// henüz rdirect ve pipe yapılmadı onları atlayarak echo yazdırılıyor;
-			if (g_var.str[k][0] == '|')
-			{
-				printf("--Pipe_Yapılmadı_Henüz--\n");
-			}
-			k++;
-		}
-	}
-	if (v_flag)
-		printf("\n");
-}
-void	Command_Building(void)
-{
-	int i;
-
-	i = 0;
-	while (g_var.str[i])
-	{
-		if (strequal(g_var.str[i], "echo"))
-			ft_echo(i);
-		i++;
-	}
-	
-}
-
-/*void	rdrirect_upper(void)
-{
-	int i;
-	int fd;
-
-	i = 0;
-	g_var.b_str = g_var.str;
-	while (g_var.b_str[i])
-	{
-		if (g_var.b_str[i] == '>')
-		{
-			fd = open(g_var.b_str[i + 1], O_CREAT | O_RDWR, 0777);
-		}
-		
-	}
-	
-}*/
 
 int main (int ac , char **av, char **envp)
 {
+	//char location[256];
+	
+	
     while (1)
     {
+		g_var.env = envp;
         char *mshell;
-        
-        mshell = readline("minishell$ ");
+       // getcwd(location, sizeof(location));
+        mshell = readline("\033[32mminishell$ \033[0m");
 		if(mshell == NULL)
 		break;
         add_history(mshell);
         start_parser(mshell);
-		Command_Prepare();
-		Command_Building();
+		command_prepare();
+		command_built();
     }
 }
