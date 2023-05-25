@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 19:03:30 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/05/24 17:21:43 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/25 02:54:40 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void    ft_pwd(void)
     {
         if (g_var.env[i][0] == 'P' && g_var.env[i][1] == 'W' && g_var.env[i][2] == 'D')
         {
-			
+				
             while (g_var.env[i][k])
             {
                 printf("%c", g_var.env[i][k++]);
@@ -54,44 +54,53 @@ void    ft_pwd(void)
     }
 }
 
-/*void	ft_exit(void)
+int	arg_isdigit(char *a)
 {
 	int i;
-	int k;
-	int flag;
 	int len;
 
 	i = 0;
-	flag = 1;
-	k = 0;
-	len = ft_strlen(g_var.str[i]);
-	while(k < len)
+	len = ft_strlen(a);
+	while (a[i] >= '0' && a[i] <= '9')
 	{
-		if(ft_isdigit(g_var.str[i + 1][k]))
-			k++;
-		else
-		{
-			flag = 0;
-			printf("exit\n");
-			printf("minishell$: exit: %s: numeric argument required", g_var.str[i + 1][k]);
-			exit(0);
-		}
+		i++;
 	}
-	if ()
+	if (len == i)
 	{
+		return (1);
 		
 	}
-	
-	if (flag)
+	else
+		return (0);
+}
+
+void	ft_exit(void)
+{
+	int i;
+
+	i = 0;
+	if (g_var.str[i + 1] == NULL)
 	{
-		kill(ft_atoi(g_var.str[i + 1]), SIGKILL);
-		exit(ft_atoi(g_var.str[i + 1]));
+		printf("exit\n");
+		exit(0);
 	}
-	
-	
-	
-	
-}*/
+	else if(arg_isdigit(g_var.str[i + 1]) && g_var.str[i + 2] != NULL)
+	{
+		printf("exit\n");
+		printf("minishell$: exit: too many arguments\n");
+	}
+	else if (arg_isdigit(g_var.str[i + 1]) && g_var.str[i + 2] == NULL)
+	{
+		printf("exit\n");
+		exit(0);
+	}
+	else
+	{
+		printf("exit\n");
+		printf("minishell$: exit: %s: numeric argument required", g_var.str[i + 1]);
+		exit(0);
+	}
+}
 
 int		command_built(void)
 {
@@ -134,7 +143,7 @@ int		command_built(void)
 		{
 			if (i == 0)
 			{
-				//ft_exit();
+				ft_exit();
 				return(0);
 			}
 		}

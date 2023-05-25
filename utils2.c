@@ -54,7 +54,6 @@ int	cd_func(int i)
         p = cut_helper(path);
 		//(void)cut_helper_test(path);
         chdir(p);
-		
     }
     
     return 0;
