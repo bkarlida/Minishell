@@ -42,6 +42,7 @@ char    *cut_helper(const char *str)
 int	cd_func(int i)
 {
     char	path[256];
+    char    *a;
     char	*p;
 
     if (getcwd(path, sizeof(path)) == NULL)
@@ -54,7 +55,14 @@ int	cd_func(int i)
         p = cut_helper(path);
 		//(void)cut_helper_test(path);
         chdir(p);
+        // aşşağıdaki kodları her cd  komutuna düzenleyip koyman lazım
+        free(g_var.pwd_new);
+        a = malloc(5);
+        a = "PWD=";
+        g_var.pwd_new = ft_strjoin(a, p);
+        printf("%s\n",g_var.pwd_new); // pwd çalışdığında yeniden dizayn etmek için kullanıyoruz
+        // ve dikkat et cd ile ileri gittiğinde env de fazladan yer ayırman gerekebilir pwd için
     }
-    
+    //Eksik var cd ile geri gidildiğinde en sona geldiğinde / atılmaıs lazım bizde ise boş atıyor
     return 0;
 }

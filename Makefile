@@ -1,4 +1,5 @@
-SRCS		=		minishell.c lst_func.c parser.c utils.c  cmd_built.c utils2.c ft_echo.c
+SRCS		=		minishell.c lst_func.c parser.c utils.c  cmd_built.c utils2.c ft_echo.c ft_exit.c \
+					pwd_env.c 
 
 LIBFT		=		-I./libft
 
