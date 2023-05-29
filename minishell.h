@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:37:26 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/05/27 03:35:43 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/29 21:32:16 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ struct s_var
 	char	**b_str;// kullanım dışı
 	char	**env; // mainden env çekildi
 	int		env_size; // envsize
-	char	*pwd_new;
+	char	*pwd_new; // değişen pwd nin yeni yolunu env eklemek için
+	char	**export; // export
 }	g_var;
 
 void		start_parser(char *line);

@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:31:42 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/05/27 05:46:17 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/29 21:58:24 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,21 +79,36 @@ void	command_prepare(void)
 void	env_malloc(char **envp)
 {
 	int i;
+	int len;
 
 	i = 0;
-	g_var.env = malloc(sizeof(char *) * (g_var.env_size + 1));
+	len = 0;
+	while (envp[i])
+	{
+		i++;
+		len++;
+	}
+	g_var.env_size = len;
+	i = 0;
+	g_var.env = malloc(sizeof(char *) * (g_var.env_size + 2));
 	while (envp[i])
 	{
 		g_var.env[i] = ft_strdup(envp[i]);
+		printf("<<<<<<<<  %s  >>>>>>\n", g_var.env[i]);
 		i++;
 	}
 	g_var.env[i] = NULL;
 }
 
+void	handle_signal(int sig)
+{
+	(void)sig;
+	exit(0);// eksik tam çalışmıyor
+}
+
 int main (int ac , char **av, char **envp)
 {
 	env_malloc(envp);
-	g_var.pwd_new = malloc(sizeof(char) * 2);
 	g_var.pwd_new = NULL;
     while (1)
     {
@@ -105,6 +120,6 @@ int main (int ac , char **av, char **envp)
         start_parser(mshell);
 		command_prepare();
 		command_built();
-		
+		signal(SIGINT, handle_signal);
     }
 }

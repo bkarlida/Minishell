@@ -6,14 +6,30 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 19:03:30 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/05/27 02:36:18 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/29 21:32:47 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
+void	ft_export(void)
+{
+	int i;
+	int k;
 
+	i = 0;
+	k = 0;
+	while (g_var.env[i])
+	{
+		while (g_var.env[i][k])
+		{
+			
+		}
+		
+	}
+	
+}
 
 
 
@@ -61,6 +77,11 @@ int		command_built(void)
 				ft_exit();
 				return(0);
 			}
+		}
+		else if (strequal(g_var.str[i], "export"))
+		{
+			ft_pwd();
+			return(0);
 		}
 		i++;
 	}

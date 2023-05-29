@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 02:35:48 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/05/27 05:18:57 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/29 21:59:15 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,13 @@
 void	ft_env(void)
 {
 	int i;
-	int len;
 
 	i = 0;
-	len = 0;
 	while (g_var.env[i])
     {
-		len++;
 		printf("%s\n", g_var.env[i++]);
     }
-	g_var.env_size = len;
-	printf("%d\n", g_var.env_size);
-	
+	//printf("%d\n", g_var.env_size);
 }
 
 void    ft_pwd(void)
@@ -45,8 +40,7 @@ void    ft_pwd(void)
         {
 			if (g_var.pwd_new != NULL)
 			{
-				free(g_var.env[i]); // dikkat
-				g_var.env[i] = malloc(sizeof(char) * (ft_strlen(g_var.pwd_new) + 1));
+				//free(g_var.env[i]); // dikkat
 				g_var.env[i] = g_var.pwd_new;
 			}
             while (g_var.env[i][k])
