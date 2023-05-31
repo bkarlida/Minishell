@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 15:56:52 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/05/17 09:08:48 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/31 17:47:37 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <unistd.h>
+# include <stdio.h>
 # include <stdlib.h>
 
 typedef struct s_list
@@ -30,8 +31,8 @@ void		ft_lstclear(t_list **lst, void (*del)(void *));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
 t_list		*ft_lstlast(t_list *lst);
 void		ft_lstdelone(t_list *lst, void (*del) (void *));
-int			ft_isalnum(int a);
-int			ft_isalpha(int a);
+int			ft_isalnum(char a);
+int			ft_isalpha(char *a);
 int			ft_isascii(int a);
 int			ft_isdigit(int a);
 int			ft_isprint(int a);

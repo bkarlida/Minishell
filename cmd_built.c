@@ -6,29 +6,75 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 19:03:30 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/05/29 21:32:47 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/31 19:30:54 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int		splt_len(char **str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return(i);
+}
 
 void	ft_export(void)
 {
-	int i;
+	int len;
+	int j;
 	int k;
+	int i;
+	char	**tmp;
 
-	i = 0;
+	i = 1;
 	k = 0;
-	while (g_var.env[i])
+	len = 0;
+	while (g_var.str[i])
 	{
-		while (g_var.env[i][k])
+		if (!ft_isalpha(g_var.str[i]) || g_var.str[i][0] == '>' || g_var.str[i][0] == '<' ||
+			g_var.str[i][0] == '|')
 		{
-			
+			i++;
+			continue;
 		}
-		
+		i++;
+		len++;
 	}
-	
+	i = 0;
+	tmp = malloc(sizeof(char *) * (g_var.export_size + len + 1));
+	while (g_var.export[i])
+	{
+		tmp[i] = ft_strdup(g_var.export[i]);
+		i++;
+	}
+	k = 1;
+	len++;
+	while (k < len)
+	{
+		if (ft_isalpha(g_var.str[k]) && g_var.str[k][0] != '>' && g_var.str[k][0] != '<'
+			&& g_var.str[k][0] != '|')
+		{
+			tmp[i] = ft_strdup(g_var.str[k]);
+			i++;
+			k++;
+			continue;
+		}
+		k++;
+	}
+	tmp[i] = NULL;
+	k = 0;
+	i = 0;
+	free(g_var.export);
+	g_var.export = tmp;
+	while (g_var.export[i])
+	{
+		printf("declare -x %s\n", g_var.export[i]);
+		i++;
+	}
 }
 
 
@@ -36,8 +82,10 @@ void	ft_export(void)
 int		command_built(void)
 {
 	int i;
+	static int flag;
 
 	i = 0;
+	flag = 0;
 	while (g_var.str[i])
 	{
 		if (strequal(g_var.str[i], "echo"))
@@ -80,7 +128,8 @@ int		command_built(void)
 		}
 		else if (strequal(g_var.str[i], "export"))
 		{
-			ft_pwd();
+			
+			ft_export();
 			return(0);
 		}
 		i++;

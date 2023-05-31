@@ -6,13 +6,13 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 15:09:05 by bkarlida          #+#    #+#             */
-/*   Updated: 2022/10/31 21:34:26 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/31 17:46:30 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalnum(int a)
+int	ft_isalnum(char a)
 {
 	if ((a >= 'A' && a <= 'Z') || (a >= 'a' && a <= 'z')
 		|| (a >= '0' && a <= '9'))

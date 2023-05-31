@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:31:42 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/05/29 21:58:24 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/31 19:22:10 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	env_malloc(char **envp)
 	while (envp[i])
 	{
 		g_var.env[i] = ft_strdup(envp[i]);
-		printf("<<<<<<<<  %s  >>>>>>\n", g_var.env[i]);
+		//printf("<<<<<<<<  %s  >>>>>>\n", g_var.env[i]);
 		i++;
 	}
 	g_var.env[i] = NULL;
@@ -106,14 +106,37 @@ void	handle_signal(int sig)
 	exit(0);// eksik tam çalışmıyor
 }
 
+void	env_export(char **envp)
+{
+	int i;
+	int len;
+
+	i = 0;
+	len = 0;
+	while (envp[len])
+	{
+		len++;
+	}
+	g_var.export_size = len;
+	g_var.export = malloc(sizeof(char *) * (g_var.env_size + 1));
+	while (envp[i])
+	{
+		g_var.export[i] = ft_strdup(envp[i]);
+		//printf("declare -x %s\n", g_var.export[i]);
+		i++;
+	}
+	g_var.export[i] = NULL;
+}
+
 int main (int ac , char **av, char **envp)
 {
 	env_malloc(envp);
+	env_export(envp);
 	g_var.pwd_new = NULL;
     while (1)
     {
         char *mshell;
-        mshell = readline("\033[32mminishell$ \033[0m");
+        mshell = readline("\033[32mminishell  $ \033[0m");
 		if(mshell == NULL)
 		break;
         add_history(mshell);

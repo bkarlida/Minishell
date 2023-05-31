@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 08:50:31 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/05/24 15:55:02 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/05/31 21:51:58 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ int    strequal(char *str, char *ptr)
 
     i = 0;
     len = 0;
-    str = ft_tolower(str);
-    ptr = ft_tolower(ptr);
+    ft_tolower(str);
+   	ft_tolower(ptr);
+	if (ft_strlen(str) != ft_strlen(ptr))
+		return (0);
     while (str[i])
     {
         if (str[i] == ptr[i])

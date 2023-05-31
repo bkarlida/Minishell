@@ -1,27 +1,28 @@
 #include "minishell.h"
 
-/*                     test edilecek **********
-char    *cut_helper_test(const char *str)
+// env de istediğin bölümün adını yazıyorsun sadece, "PATH" gibi. Sana o arrayin adresini döndürüyor
+char	*find_in_env(char *find)
 {
-    int     i;
+	int		i;
 	int		j;
-    char    *rstr;
+	int		index;
 
-	j = 0;
-    i = ft_strlen(str) - 1;
-    rstr = (char *)malloc(i + 2);
-    if (str[i] == '/')
-        i--;
-    while (i >= 0 && str[i] != '/')
-        i--;
-	i++;
-	while (str[i] && str[i] != '/')
-		rstr[j++] = str[i++];
-	rstr[j] = 0;
-    printf("---> rstr test: %s\n", rstr);
-    return (rstr);
+	i = 0;
+	while (g_var.env_size > i)
+	{
+		j = 0;
+		index = 0;
+		while (g_var.env[i][j] && (find[index] == g_var.env[i][j]))
+		{
+			j++;
+			index++;
+			if (index == ft_strlen(find) && g_var.env[i][j] == '=')
+				return (g_var.env[i]);
+		}
+		i++;
+	}
+	return (0);
 }
-*/
 
 char    *cut_helper(const char *str)
 {
@@ -41,7 +42,8 @@ char    *cut_helper(const char *str)
 
 int	cd_func(int i)
 {
-    char	path[256];
+    char	*home = getenv("HOME");
+    char	path[1024];
     int     a;
     char	*p;
 
@@ -51,42 +53,44 @@ int	cd_func(int i)
         printf("%s\n", path);
     else if (strequal(g_var.str[i + 1], ".."))
     {
-		printf("---> path %s\n", path); //? eski konum
+		printf("---> path %s\n", path);
         p = cut_helper(path);
-		//(void)cut_helper_test(path);
         a = chdir(p);
-        printf("wwwww%dwwww\n", a);
-        // aşşağıdaki kodları her cd  komutuna düzenleyip koyman lazım
-        if (g_var.pwd_new)
-		{
-			perror("aehjgfujesbf");
-			free(g_var.pwd_new);
-			g_var.pwd_new = NULL;
-		}
-		printf("**%c**\n", p[0]);
-		printf("**%c**\n", p[1]);
-		if (a == -1)
-		{
-			perror("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-			g_var.pwd_new = ft_strjoin("PWD=", "/");
-			//printf("------%s------\n", p);
-		}
-		else
-			g_var.pwd_new = ft_strjoin("PWD=", p);
-        printf("%s\n",g_var.pwd_new); // pwd çalışdığında yeniden dizayn etmek için kullanıyoruz
-        // ve dikkat et cd ile ileri gittiğinde env de fazladan yer ayırman gerekebilir pwd için
     }
 	else if (g_var.str[i + 1])
 	{
-		p = ft_strjoin(path, "/");
-		p = ft_strjoin(p, g_var.str[i + 1]);
-		printf("yeni dizin: %s\n", p);
-		chdir(p);
-		free(p);
+		if (strequal(g_var.str[i + 1], "~")) // ana dizine çıkma ve ana dizinden farklı bir dizine ulaşmak için
+		{
+			if (ft_strlen(g_var.str[i + 1]) > 1)
+			{
+				p = ft_strjoin(home, g_var.str[i + 1] + 1);
+				a = chdir(p);
+
+			}
+			else
+				a = chdir(home);
+		}
+		else // cd ile, ileri gitme bölümü
+		{
+			p = ft_strjoin(path, "/");
+			p = ft_strjoin(p, g_var.str[i + 1]);
+			printf("yeni dizin: %s\n", p);
+			a = chdir(p);
+			free(p);
+		}
 	}
 	else
-		printf("%d\n", chdir("~")); //! seg hatası var çözülecek
+		chdir(home);
 	printf("** cd işlem sonucu: %s\n", getcwd(path, sizeof(path)));
-    //Eksik var cd ile geri gidildiğinde en sona geldiğinde / atılmaıs lazım bizde ise boş atıyor
+	
+	if (g_var.pwd_new)
+	{	
+		free(g_var.pwd_new);
+		g_var.pwd_new = NULL;
+	}
+	if (a == -1)
+		g_var.pwd_new = ft_strjoin("PWD=", "/");
+	else
+		g_var.pwd_new = ft_strjoin("PWD=", p);
     return 0;
 }
