@@ -36,17 +36,24 @@ char    *cut_helper(const char *str)
     while (i >= 0 && str[i] != '/')
         i--;
     ft_strlcpy(rstr, str, i + 1);
+	if (ft_strlen(rstr) < 2)
+		ft_strlcpy(rstr, "/", 2);
     printf("---> rstr: %s\n", rstr); //? yeni konum
     return (rstr);
 }
 
+
+
 int	cd_func(int i)
 {
-    char	*home = getenv("HOME");
+    char	*hm_test = getenv("HOME");
+	char	*home;
     char	path[1024];
     int     a;
     char	*p;
 
+	home = find_in_env("PWD") + 4;
+	printf("test find in env: %s\n", home);
     if (getcwd(path, sizeof(path)) == NULL)
         printf("---> Path error\n");
     else if (strequal(g_var.str[i], "pwd"))
@@ -55,7 +62,7 @@ int	cd_func(int i)
     {
 		printf("---> path %s\n", path);
         p = cut_helper(path);
-        a = chdir(p);
+    	a = chdir(p);
     }
 	else if (g_var.str[i + 1])
 	{
@@ -68,15 +75,21 @@ int	cd_func(int i)
 
 			}
 			else
+			{
 				a = chdir(home);
+			}
 		}
 		else // cd ile, ileri gitme bölümü
 		{
-			p = ft_strjoin(path, "/");
+			if (ft_strlen(path) > 1)
+				p = ft_strjoin(path, "/");
+			else
+				p = 0;
+			printf("p: %s\n", p);
+			getchar();
 			p = ft_strjoin(p, g_var.str[i + 1]);
 			printf("yeni dizin: %s\n", p);
 			a = chdir(p);
-			free(p);
 		}
 	}
 	else
@@ -88,9 +101,8 @@ int	cd_func(int i)
 		free(g_var.pwd_new);
 		g_var.pwd_new = NULL;
 	}
-	if (a == -1)
-		g_var.pwd_new = ft_strjoin("PWD=", "/");
-	else
-		g_var.pwd_new = ft_strjoin("PWD=", p);
+	g_var.pwd_new = ft_strjoin("PWD=", p);
+	printf("pwd_new: %s\n", g_var.pwd_new);
+	free(p);
     return 0;
 }

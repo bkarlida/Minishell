@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:37:26 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/05/31 21:01:17 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/01 18:55:33 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ struct s_var
 	char	*pwd_new; // değişen pwd nin yeni yolunu env eklemek için
 	char	**export; // export
 	int		export_size;
+	char	*ex_equal;
 	
 }	g_var;
 
 void		start_parser(char *line);
+int			find_helper(char **p, char *a);
 int			arg_isdigit(char *a);
 void    	ft_unset(char *str);
 void		ft_exit(void);

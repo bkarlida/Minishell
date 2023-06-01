@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:31:42 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/05/31 19:22:10 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/01 16:20:16 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int main (int ac , char **av, char **envp)
     while (1)
     {
         char *mshell;
-        mshell = readline("\033[32mminishell  $ \033[0m");
+        mshell = readline("mminishell $ ");
 		if(mshell == NULL)
 		break;
         add_history(mshell);

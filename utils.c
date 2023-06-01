@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 08:50:31 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/05/31 21:51:58 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/01 14:59:12 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,37 @@ void    free_func(char **str)
         free(str[i++]);
     }
     free(str);
+}
+
+int		find_helper(char **p, char *a)
+{
+	int i;
+	int k;
+	int flag;
+
+	i = 0;
+	while (p[i])
+	{
+		k = 0;
+		flag = 0;
+		while (p[i][k])
+		{
+			flag = 1;
+			if (p[i][k] == a[k])
+			{
+				k++;
+			}
+			else
+			{
+				flag = 0;
+				break;
+			}
+		}
+		if (flag)
+			return(1);
+		i++;
+	}
+	return(0);
 }
 
 int    strequal(char *str, char *ptr)

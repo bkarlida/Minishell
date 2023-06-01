@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 19:03:30 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/05/31 19:30:54 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/01 21:31:59 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,47 @@ int		splt_len(char **str)
 	while (str[i])
 		i++;
 	return(i);
+}
+
+int		export_equal(char *str)
+{
+	int i;
+	int k;
+	int j;
+	int flag;
+
+	i = 0;
+	j = 0;
+	flag = 0;
+	k = 0;
+	g_var.ex_equal = malloc(sizeof(char) * ft_strlen(str));
+	while (str[i])
+	{
+		if ((str[0] >= '0' && str[0] <= '9') || str[0] == '=')
+			return(0);
+		if (str[i] == '=')
+		{
+			while (str[k])
+			{
+				g_var.ex_equal[j] = str[k];
+				if (str[k] == '=' && flag == 0)
+				{
+					k++;
+					j++;
+					g_var.ex_equal[j] = '"';
+					flag = 1;
+				}
+				k++;
+				j++;
+			}
+			g_var.ex_equal[j] = '"';
+			j++;
+			g_var.ex_equal[j] = '\0';
+			return(1);
+		}
+		i++;
+	}
+	return(0);
 }
 
 void	ft_export(void)
@@ -58,8 +99,8 @@ void	ft_export(void)
 		if (ft_isalpha(g_var.str[k]) && g_var.str[k][0] != '>' && g_var.str[k][0] != '<'
 			&& g_var.str[k][0] != '|')
 		{
-			tmp[i] = ft_strdup(g_var.str[k]);
-			i++;
+				tmp[i] = ft_strdup(g_var.str[k]);
+				i++;
 			k++;
 			continue;
 		}
@@ -70,6 +111,7 @@ void	ft_export(void)
 	i = 0;
 	free(g_var.export);
 	g_var.export = tmp;
+		printf("*****%s\n", g_var.export[i]);
 	while (g_var.export[i])
 	{
 		printf("declare -x %s\n", g_var.export[i]);
@@ -128,7 +170,6 @@ int		command_built(void)
 		}
 		else if (strequal(g_var.str[i], "export"))
 		{
-			
 			ft_export();
 			return(0);
 		}
