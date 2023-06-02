@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 19:03:30 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/06/01 21:31:59 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/02 22:00:17 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,40 +22,76 @@ int		splt_len(char **str)
 	return(i);
 }
 
-int		export_equal(char *str)
+int		is_equal(char *str)
 {
 	int i;
-	int k;
-	int j;
-	int flag;
 
 	i = 0;
-	j = 0;
-	flag = 0;
-	k = 0;
-	g_var.ex_equal = malloc(sizeof(char) * ft_strlen(str));
+	perror("zooooooooort");
 	while (str[i])
 	{
-		if ((str[0] >= '0' && str[0] <= '9') || str[0] == '=')
+		if (str[0] == '=')
 			return(0);
-		if (str[i] == '=')
+		else if (str[i] == '=')
 		{
-			while (str[k])
+			return(1);
+		}
+		else
+			i++;
+	}
+	return(0);
+}
+
+char	*export_equal(char *str)
+{
+	int		i;
+	char	*new;
+
+	i = 0;
+	new = malloc(sizeof(char) * ft_strlen(str));
+	while (str[i] != '=')
+	{
+		new[i] = str[i];
+		i++;
+	}
+	new[i] = '\0';
+	printf("-----%s**************************************\n", new);
+	return(new);
+}
+
+int		find_equal(char **str, char *new)
+{
+	int i;
+	int flag;
+	int j;
+	int k;
+	int c;
+
+	i = 0;
+	flag = 0;
+	while (str[i])
+	{
+		k = 0;
+		flag = 0;
+		c = 0;
+		j = 0;
+		while (str[i][k])
+		{
+			if (str[i][k] == new[c])
 			{
-				g_var.ex_equal[j] = str[k];
-				if (str[k] == '=' && flag == 0)
-				{
-					k++;
-					j++;
-					g_var.ex_equal[j] = '"';
-					flag = 1;
-				}
-				k++;
-				j++;
+				flag++;
 			}
-			g_var.ex_equal[j] = '"';
-			j++;
-			g_var.ex_equal[j] = '\0';
+			k++;
+			if (str[i][k] == '=')
+			{
+				break;
+			}
+			c++;
+		}
+		printf("%duuuu\n", flag);
+		printf("%duuuu\n", c);
+		if (flag == c)
+		{
 			return(1);
 		}
 		i++;
@@ -74,9 +110,10 @@ void	ft_export(void)
 	i = 1;
 	k = 0;
 	len = 0;
+	printf("ldkasdikasdsf\n");
 	while (g_var.str[i])
 	{
-		if (!ft_isalpha(g_var.str[i]) || g_var.str[i][0] == '>' || g_var.str[i][0] == '<' ||
+		if (g_var.str[i][0] == '>' || g_var.str[i][0] == '<' ||
 			g_var.str[i][0] == '|')
 		{
 			i++;
@@ -96,29 +133,45 @@ void	ft_export(void)
 	len++;
 	while (k < len)
 	{
-		if (ft_isalpha(g_var.str[k]) && g_var.str[k][0] != '>' && g_var.str[k][0] != '<'
+		if (g_var.str[k][0] != '>' && g_var.str[k][0] != '<'
 			&& g_var.str[k][0] != '|')
 		{
+			if (!find_helper(g_var.export, g_var.str[k]) && ft_isalpha(g_var.str[k][0]))
+			{
+				perror("sjuhgkjsdhajdfsohjalfdjhlkajdhflkjadflkhjalkfdhf");
+				if (is_equal(g_var.str[k]))
+				{
+					perror("wwwwwwwwwwwwwwwwwwwwwwwwwww");
+					if (find_equal(g_var.export, export_equal(g_var.str[k])))
+					{
+						perror("aaaaaaaaaaaaaaaaaaaaa");
+						k++;
+						continue;
+					}
+				}
 				tmp[i] = ft_strdup(g_var.str[k]);
 				i++;
-			k++;
-			continue;
+			}
 		}
 		k++;
+		// == ksımıları yapılacak
 	}
 	tmp[i] = NULL;
-	k = 0;
-	i = 0;
 	free(g_var.export);
 	g_var.export = tmp;
-		printf("*****%s\n", g_var.export[i]);
+}
+
+void	export_print(void)
+{
+	int i;
+
+	i = 0;
 	while (g_var.export[i])
 	{
 		printf("declare -x %s\n", g_var.export[i]);
 		i++;
 	}
 }
-
 
 
 int		command_built(void)
@@ -170,7 +223,12 @@ int		command_built(void)
 		}
 		else if (strequal(g_var.str[i], "export"))
 		{
-			ft_export();
+			if (g_var.lst_size > 1)
+			{
+				ft_export();
+			}
+			else
+				export_print();
 			return(0);
 		}
 		i++;

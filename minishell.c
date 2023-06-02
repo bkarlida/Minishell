@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:31:42 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/06/01 16:20:16 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/01 21:47:39 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	env_export(char **envp)
 		len++;
 	}
 	g_var.export_size = len;
-	g_var.export = malloc(sizeof(char *) * (g_var.env_size + 1));
+	g_var.export = malloc(sizeof(char *) * (g_var.export_size + 1));
 	while (envp[i])
 	{
 		g_var.export[i] = ft_strdup(envp[i]);

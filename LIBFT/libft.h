@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 15:56:52 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/05/31 17:47:37 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/02 17:28:07 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void		ft_lstiter(t_list *lst, void (*f)(void *));
 t_list		*ft_lstlast(t_list *lst);
 void		ft_lstdelone(t_list *lst, void (*del) (void *));
 int			ft_isalnum(char a);
-int			ft_isalpha(char *a);
+int			ft_isalpha(char a);
 int			ft_isascii(int a);
 int			ft_isdigit(int a);
 int			ft_isprint(int a);

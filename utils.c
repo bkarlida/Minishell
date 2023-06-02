@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 08:50:31 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/06/01 14:59:12 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/02 20:12:04 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,21 @@ int		find_helper(char **p, char *a)
 	{
 		k = 0;
 		flag = 0;
-		while (p[i][k])
+		while (k < ft_strlen(a))
 		{
 			flag = 1;
-			if (p[i][k] == a[k])
-			{
-				k++;
-			}
-			else
+			if (p[i][k] != a[k])
 			{
 				flag = 0;
 				break;
 			}
+			k++;
 		}
 		if (flag)
+		{
+			g_var.ex_int = i;
 			return(1);
+		}
 		i++;
 	}
 	return(0);
