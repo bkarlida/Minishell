@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 17:05:56 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/05/17 07:44:31 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/06 16:37:22 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,13 @@ link_list	*link_lstnew(char *content, char flag)
 int	link_lstsize(link_list *lst)
 {
 	int	i;
+	link_list	*temp;
 
 	i = 0;
-	while (lst)
+	temp = lst;
+	while (temp)
 	{
-		lst = lst->next;
+		temp = temp->next;
 		i++;
 	}
 	return (i);

@@ -1,28 +1,7 @@
 #include "minishell.h"
 
 // env de istediğin bölümün adını yazıyorsun sadece, "PATH" gibi. Sana o arrayin adresini döndürüyor
-char	*find_in_env(char *find)
-{
-	int		i;
-	int		j;
-	int		index;
 
-	i = 0;
-	while (g_var.env_size > i)
-	{
-		j = 0;
-		index = 0;
-		while (g_var.env[i][j] && (find[index] == g_var.env[i][j]))
-		{
-			j++;
-			index++;
-			if (index == ft_strlen(find) && g_var.env[i][j] == '=')
-				return (g_var.env[i]);
-		}
-		i++;
-	}
-	return (0);
-}
 
 char    *cut_helper(const char *str)
 {

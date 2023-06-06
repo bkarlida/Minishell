@@ -6,11 +6,76 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 08:50:31 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/06/02 20:12:04 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/06 19:05:24 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_strncmpv2(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (!s2)
+		return (1);
+	while (i < n && ((unsigned char)s1[i] || (unsigned char)s2[i]))
+	{
+		if ((unsigned char)s1[i] > (unsigned char)s2[i]
+			|| (unsigned char)s1[i] < (unsigned char)s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	return (0);
+}
+
+char	*find_in_env(char *find)
+{
+	int		i;
+	int		j;
+	int		index;
+
+	i = 0;
+	while (g_var.env_size > i)
+	{
+		j = 0;
+		index = 0;
+		while (g_var.env[i][j] && (find[index] == g_var.env[i][j]))
+		{
+			j++;
+			index++;
+			if (index == ft_strlen(find) && g_var.env[i][j] == '=')
+				return (g_var.env[i]);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	is_alphanum(char *str, int len)
+{
+	int	i;
+
+	if (!ft_isalpha(*str))
+		return (0);
+	i = -1;
+	while (str[++i] && i < len)
+	{
+		if (!ft_isalnum(str[i]))
+			return (0);
+	}
+	return (1);
+}
+
+int		splt_len(char **str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return(i);
+}
 
 void    free_func(char **str)
 {
@@ -22,37 +87,6 @@ void    free_func(char **str)
         free(str[i++]);
     }
     free(str);
-}
-
-int		find_helper(char **p, char *a)
-{
-	int i;
-	int k;
-	int flag;
-
-	i = 0;
-	while (p[i])
-	{
-		k = 0;
-		flag = 0;
-		while (k < ft_strlen(a))
-		{
-			flag = 1;
-			if (p[i][k] != a[k])
-			{
-				flag = 0;
-				break;
-			}
-			k++;
-		}
-		if (flag)
-		{
-			g_var.ex_int = i;
-			return(1);
-		}
-		i++;
-	}
-	return(0);
 }
 
 int    strequal(char *str, char *ptr)

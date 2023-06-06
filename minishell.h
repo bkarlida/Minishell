@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:37:26 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/06/02 19:39:17 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/06 18:58:46 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,32 @@ struct s_var
 	char	*cont; // parser kısmında kullanılan geçici değişken
 	char	rdr_flag;//oluşturulan listelere flag ataması yapılır
 	int		extra_rdr_flag;//beklemede
-	//int		error_flag;//kullanım dışı
 	int		lst_size; // parserdan sonra oluşan listenin uzunluğu
 	char	**str; // bütün lst->contentlerinin toplandığı double array
-	char	**b_str;// kullanım dışı
 	char	**env; // mainden env çekildi
 	int		env_size; // envsize
 	char	*pwd_new; // değişen pwd nin yeni yolunu env eklemek için
 	char	**export; // export
-	int		export_size;
-	char	*ex_int;
+	int		export_size; // export uzunluğu
+	int		ex_int; // export
+	char	**cmd; // execve için
+	char	**path_env; // execve için path ayrılmış hali
 	
 }	g_var;
 
+void		ft_export(void);
+void		path_splt(void);
+void		exec_init(void);
+char		*find_in_env(char *find);
+void    	free_func(char **str);
+int			ft_strncmpv2(const char *s1, const char *s2, size_t n);
+int			is_alphanum(char *str, int len);
 void		start_parser(char *line);
-int			find_helper(char **p, char *a);
+int			splt_len(char **str);
 int			arg_isdigit(char *a);
 void    	ft_unset(char *str);
 void		ft_exit(void);
 void		ft_env(void);
-void    	ft_pwd(void);
 void		ft_pwd(void);
 int			ft_echo_is_null(char *str);
 void		ft_echo(int	k);
@@ -73,6 +79,6 @@ link_list	*link_lstlast(link_list *lst);
 link_list	*link_lstnew(char *content, char flag);
 int			link_lstsize(link_list *lst);
 int			cd_func(int i);
-char 	   *cut_helper_test(const char *str);
+char		*cut_helper_test(const char *str);
 
 #endif

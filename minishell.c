@@ -6,52 +6,11 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:31:42 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/06/01 21:47:39 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/06 21:27:55 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	start_parser(char *line)
-{
-	int i;
-	int len;
-
-	i = 0;
-	len = ft_strlen(line);
-	g_var.extra_rdr_flag = 1;
-	link_lstclear(&g_var.lst);
-	while (i < len)
-	{
-		if ((line[i] == ' ' || line[i] == '\t') && line[i])
-			i++;
-		else if (line[i] == '|' || line[i] == '>' || line[i] == '<')
-		{
-			if ((line[i] != ' ' || line[i] != '\t') && line[i])
-			{
-				rdr_parser(line, &i);
-			}
-			else
-				if(!line[i])
-					i++;
-		}
-		else
-			quot_parser(line, &i);
-	}
-	// sil ekrana yazdırma bölümü
-	link_list *tmp;
-	tmp = g_var.lst;
-	printf("----------Liste_Ekrana_Bastırılıyor!---------\n");
-	while (tmp)
-	{
-		printf("%s    ", tmp->content);
-		//printf("  **%d**    ", tmp->extra_flag);
-		printf("----%c----\n", tmp->flag);
-		tmp = tmp->next;
-	}
-	printf("----------Liste_Ekrana_Bastırıldı!---------\n");
-}
-
 
 void	command_prepare(void)
 {
@@ -64,16 +23,16 @@ void	command_prepare(void)
 	g_var.str = malloc(sizeof(char *) * (g_var.lst_size + 1));
 	while (tmp)
 	{
-		g_var.str[i++] = tmp->content;
+		g_var.str[i] = ft_strdup(tmp->content);
 		tmp = tmp->next;
+		i++;
 	}
 	g_var.str[i] = NULL;
-	i = 0;
+	/*i = 0;
 	while (g_var.str[i])
 	{	
 		printf("******%s******\n", g_var.str[i++]);
-	}
-	
+	}*/
 }
 
 void	env_malloc(char **envp)
@@ -81,20 +40,15 @@ void	env_malloc(char **envp)
 	int i;
 	int len;
 
-	i = 0;
 	len = 0;
-	while (envp[i])
-	{
-		i++;
+	while (envp[len])
 		len++;
-	}
 	g_var.env_size = len;
 	i = 0;
 	g_var.env = malloc(sizeof(char *) * (g_var.env_size + 2));
 	while (envp[i])
 	{
 		g_var.env[i] = ft_strdup(envp[i]);
-		//printf("<<<<<<<<  %s  >>>>>>\n", g_var.env[i]);
 		i++;
 	}
 	g_var.env[i] = NULL;
@@ -114,35 +68,79 @@ void	env_export(char **envp)
 	i = 0;
 	len = 0;
 	while (envp[len])
-	{
 		len++;
-	}
 	g_var.export_size = len;
 	g_var.export = malloc(sizeof(char *) * (g_var.export_size + 1));
 	while (envp[i])
 	{
 		g_var.export[i] = ft_strdup(envp[i]);
-		//printf("declare -x %s\n", g_var.export[i]);
 		i++;
 	}
 	g_var.export[i] = NULL;
 }
 
+void	free_list(link_list *lst)
+{
+	while (lst)
+	{
+		free(lst->content);
+		lst = lst->next;
+	}
+	free(lst);
+}
+
+
+void	null_init(void)
+{
+	g_var.str = NULL;
+	g_var.env = NULL;
+	g_var.pwd_new = NULL;
+	g_var.export = NULL;
+	g_var.cmd = NULL;
+	g_var.path_env = NULL;
+	g_var.pwd_new = NULL;
+	g_var.cont = NULL;
+}
+
+void	all_free(void)
+{
+	int i;
+
+	i = 0;   // pwd_new ve diğerleri freelenecek
+	if (g_var.str)
+		free_func(g_var.str);
+	if (g_var.path_env)
+		free_func(g_var.path_env);
+	if (g_var.cmd)
+		free_func(g_var.cmd);
+}
+
 int main (int ac , char **av, char **envp)
 {
+    char	*mshell;
+	int i;
+	
+	null_init();
 	env_malloc(envp);
 	env_export(envp);
-	g_var.pwd_new = NULL;
     while (1)
     {
-        char *mshell;
-        mshell = readline("mminishell $ ");
+        mshell = readline("minishell $ ");
 		if(mshell == NULL)
-		break;
+			break;
         add_history(mshell);
         start_parser(mshell);
 		command_prepare();
-		command_built();
-		signal(SIGINT, handle_signal);
+		i = command_built();
+		path_splt();
+		if (i)
+			exec_init();
+		
+
+
+
+
+		
+		all_free();
     }
 }

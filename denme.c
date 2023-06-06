@@ -1,49 +1,33 @@
-int		find_helper(char **p, char *a)
-{
-	int i;
-	int k;
-	int flag;
-
-	i = 0;
-	while (p[i])
-	{
-		k = 0;
-		flag = 0;
-		while (p[i][k])
-		{
-			flag = 1;
-			if (p[i][k] == a[k])
-			{
-				k++;
-			}
-			else
-			{
-				flag = 0;
-				break;
-			}
-		}
-		if (flag)
-			return(1);
-		i++;
-	}
-	return(0);
-}
-
+#include "minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-int main ()
+void	child_initilaze(char **env)
 {
-    char **p;
-    char *a;
-    int i = 0;
+	int id;
+	int i;
+	char **str;
 
-    p = malloc(sizeof(char *) * 3);
-    p[0] = malloc(sizeof(char) * 10);   
-    p[1] = malloc(sizeof(char) * 10);   
-    p[2] = malloc(sizeof(char) * 10);
-    p[0] = "burak krldg 23";
-    p[1] = "42 istanbul kocaeli";
-    p[2] = "fenerbahçe champ aag";
-    printf("%d\n", find_helper(p, "burak krldg 23"));
+
+	str = malloc(sizeof(char * ) * 3);
+	str[0] = ft_strdup("/bin/ls");
+	str[1] = ft_strdup("-la");
+	str[2] = NULL;
+	//id = fork();
+	//wait(NULL);
+	id = 4;
+	if (id >= 1)
+	{
+		 i = execve(str[0], str, env);
+		 printf(" i: %d\n", i);
+	}
+	else
+		printf("main pid: %d\n", getpid());
+		
+		
+}
+
+int main (int ac, char **av, char **env)
+{
+  		child_initilaze(env);
 }
