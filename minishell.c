@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:31:42 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/06/06 21:27:55 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/09 21:10:33 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	command_prepare(void)
 		tmp = tmp->next;
 		i++;
 	}
+	//printf("%s\n", g_var.lst->content);
 	g_var.str[i] = NULL;
 	/*i = 0;
 	while (g_var.str[i])
@@ -54,11 +55,7 @@ void	env_malloc(char **envp)
 	g_var.env[i] = NULL;
 }
 
-void	handle_signal(int sig)
-{
-	(void)sig;
-	exit(0);// eksik tam çalışmıyor
-}
+
 
 void	env_export(char **envp)
 {
@@ -79,17 +76,6 @@ void	env_export(char **envp)
 	g_var.export[i] = NULL;
 }
 
-void	free_list(link_list *lst)
-{
-	while (lst)
-	{
-		free(lst->content);
-		lst = lst->next;
-	}
-	free(lst);
-}
-
-
 void	null_init(void)
 {
 	g_var.str = NULL;
@@ -109,11 +95,10 @@ void	all_free(void)
 	i = 0;   // pwd_new ve diğerleri freelenecek
 	if (g_var.str)
 		free_func(g_var.str);
-	if (g_var.path_env)
-		free_func(g_var.path_env);
-	if (g_var.cmd)
-		free_func(g_var.cmd);
+
+	
 }
+
 
 int main (int ac , char **av, char **envp)
 {
@@ -131,16 +116,17 @@ int main (int ac , char **av, char **envp)
         add_history(mshell);
         start_parser(mshell);
 		command_prepare();
+		//control_char();
 		i = command_built();
-		path_splt();
 		if (i)
+		{
+			perror("aehgkjshıkghsKHGSDKHgaksdg");
+			path_splt();
+			perror("sıodhgalhsgıahs");
 			exec_init();
+		}
 		
 
-
-
-
-		
-		all_free();
+		//all_free();
     }
 }

@@ -1,5 +1,5 @@
 SRCS		=		minishell.c lst_func.c parser.c utils.c  cmd_built.c ft_echo.c ft_exit.c \
-					pwd_env.c ft_export.c execve.c
+					ft_export.c execve.c ft_cd.c utils2.c
 
 LIBFT		=		-I./libft
 
@@ -7,7 +7,7 @@ OBJS		=		$(SRCS:.c=.o)
 
 NAME		=		minishell
 
-CC			=		gcc
+CC			=		gcc -fsanitize=address -g
 
 CFLAGS		=		
 

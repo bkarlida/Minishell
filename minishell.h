@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 11:37:26 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/06/06 18:58:46 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/09 17:33:14 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ struct s_var
 	int		ex_int; // export
 	char	**cmd; // execve için
 	char	**path_env; // execve için path ayrılmış hali
+	char	*acces;
 	
 }	g_var;
 
@@ -63,8 +64,8 @@ int			splt_len(char **str);
 int			arg_isdigit(char *a);
 void    	ft_unset(char *str);
 void		ft_exit(void);
+void		ft_pwd(int key);
 void		ft_env(void);
-void		ft_pwd(void);
 int			ft_echo_is_null(char *str);
 void		ft_echo(int	k);
 int			command_built(void);
@@ -80,5 +81,6 @@ link_list	*link_lstnew(char *content, char flag);
 int			link_lstsize(link_list *lst);
 int			cd_func(int i);
 char		*cut_helper_test(const char *str);
+char		*get_pwd(char *path, int key);
 
 #endif

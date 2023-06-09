@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 18:19:42 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/06/06 19:00:51 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/09 21:18:38 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,26 @@
 void	path_splt(void)
 {
 	int i;
-	char *a;
 	char **str;
 
 	i = 0;
-	str = ft_split(find_in_env("PATH"), ':');
-	a = ft_strdup(str[0]);
-	free(str[0]);
-	str[0] = ft_substr(a, 5, (ft_strlen(a) - 5));
+	str = ft_split(find_in_env("PATH") + 5, ':');
+	printf("%s\n", str[0]);
+	printf("%s\n", str[1]);
+	printf("%s\n", str[2]);
     g_var.path_env = NULL;
-	g_var.path_env = malloc(sizeof(char *) * splt_len(str));
+	g_var.path_env = malloc(sizeof(char *) * (splt_len(str) + 1));
+	printf("splt len : %d\n", splt_len(str));
 	while (str[i])
 	{
 		g_var.path_env[i] = ft_strjoin(str[i], "/");
+		printf("str = %s\n", str[i]);
+		printf("path_env = %s\n", g_var.path_env[i]);
 		free(str[i]);
-		//printf("str = %s\n", str[i]);
-		//printf("path_env = %s\n", g_var.path_env[i]);
 		i++;
 	}
+	g_var.path_env[i] = NULL;
+	free(str);
 }
 
 char	**add_cmd(void)
@@ -60,51 +62,62 @@ char	**add_cmd(void)
 	return(str);
 }
 
-char	*cmd_acces(void)
+
+
+int		cmd_acces(void)
 {
 	int i;
 	int j;
 	int k;
 	char	*a;
-	char **str;
 
 	i = 0;
-	str = add_cmd();
-	while (str[i])
+	g_var.cmd = NULL;
+	g_var.cmd = add_cmd();
+	while (g_var.cmd[i])
 	{
 		j = 0;
 		k = 0;
 		while (g_var.path_env[k])
 		{
 			j = i;
-			a = ft_strjoin(g_var.path_env[k], str[i]);
-			if (access(a, 0) == 0)
-			{ 
-				return(a);
+			g_var.acces = ft_strjoin(g_var.path_env[k], g_var.cmd[i]);
+			if (access(g_var.acces, F_OK) == 0)
+			{
+				return(0);
 			}
+			free(g_var.acces);
 			j++;
 			k++;
 		}
 		i++;
 	}
-	return(NULL);
+	return(-1);
 }
 
 
 void	exec_init(void)
 {
 	int		i;
-	char	*ac;
+	int		flag;
 	int		id;
 
 	i = 0;
-	g_var.cmd = add_cmd();
+	flag = cmd_acces();
 	id = fork();
 	if (id == 0)
 	{
-		ac = cmd_acces();
-		execve(ac, g_var.cmd, g_var.env);
-		exit(127);
+		if (flag == 0)
+		{
+			execve(g_var.acces, g_var.cmd, g_var.env);
+		}
+		else
+		{
+			printf("minishell: %s: command not found\n", g_var.str[0]);
+			exit(127);
+		}
 	}
 	waitpid(id, NULL, 0);
+	//free(g_var.acces);
+	
 }

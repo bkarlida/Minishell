@@ -6,7 +6,7 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 19:03:30 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/06/06 19:44:36 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/06/07 18:13:21 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		command_built(void)
 		}
 		else if (strequal(g_var.str[i], "cd"))
 		{
-			//cd_func(i); // bitmedi
+			cd_func(i); // bitmedi
 			return(0);
 		}
 		else if (strequal(g_var.str[i], "env"))
@@ -73,7 +73,7 @@ int		command_built(void)
 		}
         else if (strequal(g_var.str[i], "pwd"))
 		{
-			ft_pwd();
+			ft_pwd(0);
 			return(0);
 		}
     	else if (strequal(g_var.str[i], "unset"))
