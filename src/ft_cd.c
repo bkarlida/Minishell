@@ -6,91 +6,68 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 19:05:05 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/06/09 20:06:42 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/07/21 07:56:58 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
-// key == ("0" pwd değiştirme isteği, "0"dan farklı değer pwd çekme isteği)
-char	*get_pwd(char *path, int key)
+static void	cd_back(char *path)
 {
-    static char *pwd;
-    
-    if (key == 0)
-    {
-        if (pwd == (char *)0)
-        {
-            pwd = (char *)malloc(sizeof(char) * 256);
-            ft_strlcpy(pwd, path, ft_strlen(path));
-            return (0);
-        }
-        ft_strlcpy(pwd, path, ft_strlen(path) + 1);
-        return (0);
-    }
-    return (pwd);
-}
-
-static char	*cut_helper(const char *str)
-{
-	int i;
-	char *rstr;
-	
-	i = ft_strlen(str) - 1;
-	rstr = (char *)malloc(i + 2);
-	if (str[i] == '/')
-		i--;
-	while (i >= 0 && str[i] != '/')
-		i--;
-	ft_strlcpy(rstr, str, i + 1);
-	if (ft_strlen(rstr) < 2)
-		ft_strlcpy(rstr, "/", 2);
-	return (rstr);
-}
-
-static void cd_back(char *path)
-{
-	char *p;
+	char	*p;
 
 	p = cut_helper(path);
-	printf("cut_back: %s\n", p);
 	if (chdir(p) != -1)
 		get_pwd(p, 0);
+	free(p);
 }
 
-static void cd_next(char *path, char *next)
+static void	cd_next(char *path, char *next)
 {
-	char *p;
+	char	*p;
+	char	*a;
 
-	printf("cd_next çalıştı.\n");
 	if (ft_strlen(path) != 1)
 	{
 		p = ft_strdup("/");
-		p = ft_strjoin(path, p);
+		a = ft_strjoin(path, p);
+		free(p);
 	}
 	else
-		p = path;
-	p = ft_strjoin(p, next);
+		a = ft_strdup(path);
+	p = ft_strjoin(a, next);
 	if (chdir(p) != -1)
 		get_pwd(p, 0);
+	free(p);
+	free(a);
 }
 
-static void home_helper(char *path, char *home)
+static int	home_helper(char *home)
 {
-	int i;
-	int key;
-	
+	int		i;
+	int		key;
+	char	p[128];
+
 	i = 0;
 	key = 0;
-	while (path[i])
+	if (getcwd(p, sizeof(p)) == NULL)
 	{
-		if (path[i] == '/')
+		exit(1);
+	}
+	while (p[i])
+	{
+		if (p[i] == '/')
 			key++;
 		if (key == 3)
+		{
+			home[i] = 0;
 			break ;
-		home[i] = path[i];
+		}
+		home[i] = p[i];
 		i++;
 	}
+	get_pwd(p, 0);
+	return (1);
 }
 
 static void	cd_tilde(char *home, int i)
@@ -104,26 +81,22 @@ static void	cd_tilde(char *home, int i)
 			p = ft_strjoin(home, g_var.str[i] + 1);
 			if (chdir(p) != -1)
 				get_pwd(p, 0);
+			free(p);
 			return ;
 		}
 	}
-	printf("home dizini: %s\n home chdir: %d\n", home, chdir(home));
 	get_pwd(home, 0);
 }
 
-int cd_func(int i)				// PWD DURMU YAPILACAK EKSİK VAR!!
-{    
+int	cd_func(int i)
+{
 	char		*path;
-	static char *home;
+	static char	home[128];
 	static int	flag = -1;
-	
-	if (flag == -1) // pwd'ye başlangıç konumunu atıyorum
+
+	if (flag == -1)
 	{
-		flag = 1;
-		home = (char *)malloc(32);
-		path = find_in_env("PWD") + 4;
-		home_helper(path, home);
-		get_pwd(path, 0);
+		flag = home_helper(home);
 		if (i == -1)
 			return (0);
 	}

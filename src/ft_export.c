@@ -6,45 +6,22 @@
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 13:14:01 by bkarlida          #+#    #+#             */
-/*   Updated: 2023/06/06 19:48:09 by bkarlida         ###   ########.fr       */
+/*   Updated: 2023/07/21 17:27:20 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-
-int	len_equal(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != '=')
-		i++;
-	return (i);
-}
-
-int	is_equal(char *str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		if (str[i] == '=')
-			return (0);
-	return (1);
-}
-
+#include "../include/minishell.h"
 
 int	export_equal(char *str)
 {
 	int	i;
 
 	i = -1;
-	while (g_var.export[++i])
+	while (g_var.exports[++i])
 	{
-		if (len_equal(g_var.export[i]) == len_equal(str))
-			if (!ft_strncmpv2(g_var.export[i],
-					str, len_equal(g_var.export[i])))
+		if (len_equal(g_var.exports[i]) == len_equal(str))
+			if (!ft_strncmpv2(g_var.exports[i],
+					str, len_equal(g_var.exports[i])))
 				return (i);
 	}
 	return (-1);
@@ -86,21 +63,21 @@ void	export_fn(char *str)
 	index = export_equal(str);
 	if (index == -1)
 	{
-		temp = malloc(sizeof(char *) * (splt_len(g_var.export) + 2));
+		temp = malloc(sizeof(char *) * (splt_len(g_var.exports) + 2));
 		i = -1;
-		while (g_var.export[++i])
-			temp[i] = ft_strdup(g_var.export[i]);
+		while (g_var.exports[++i])
+			temp[i] = ft_strdup(g_var.exports[i]);
 		temp[i] = ft_strdup(str);
 		temp[++i] = 0;
-		free_func(g_var.export);
-		g_var.export = temp;
+		free_func(g_var.exports);
+		g_var.exports = temp;
 	}
 	else
 	{
 		if (!is_equal(str))
 		{
-			free(g_var.export[index]);
-			g_var.export[index] = ft_strdup(str);
+			free(g_var.exports[index]);
+			g_var.exports[index] = ft_strdup(str);
 		}
 	}
 }
@@ -110,19 +87,19 @@ void	ft_export(void)
 	int	i;
 	int	len;
 
-	len = splt_len(g_var.str);
+	len = splt_len(g_var.cmds[0]->str);
 	i = 0;
 	while (++i < len)
 	{
-		if (is_alphanum(g_var.str[i],
-				len_equal(g_var.str[i])))
+		if (is_alphanum(g_var.cmds[0]->str[i],
+				len_equal(g_var.cmds[0]->str[i])))
 		{
-			export_fn(g_var.str[i]);
-			if (!is_equal(g_var.str[i]))
-				env_fn(g_var.str[i]);
+			export_fn(g_var.cmds[0]->str[i]);
+			if (!is_equal(g_var.cmds[0]->str[i]))
+				env_fn(g_var.cmds[0]->str[i]);
 		}
 		else
 			printf("minishell: export: %s: not a valid identifier\n",
-				g_var.str[i]);
+				g_var.cmds[0]->str[i]);
 	}
 }

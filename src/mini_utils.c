@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   mini_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bkarlida <bkarlida@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/05 11:31:42 by burakkarlid       #+#    #+#             */
-/*   Updated: 2023/06/09 21:10:33 by bkarlida         ###   ########.fr       */
+/*   Created: 2023/07/20 22:40:45 by bkarlida          #+#    #+#             */
+/*   Updated: 2023/07/21 17:28:42 by bkarlida         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 void	command_prepare(void)
 {
-	link_list	*tmp;
-	int i;
+	t_ink_list	*tmp;
+	int			i;
 
 	i = 0;
 	tmp = g_var.lst;
@@ -27,19 +27,13 @@ void	command_prepare(void)
 		tmp = tmp->next;
 		i++;
 	}
-	//printf("%s\n", g_var.lst->content);
 	g_var.str[i] = NULL;
-	/*i = 0;
-	while (g_var.str[i])
-	{	
-		printf("******%s******\n", g_var.str[i++]);
-	}*/
 }
 
 void	env_malloc(char **envp)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	len = 0;
 	while (envp[len])
@@ -55,78 +49,42 @@ void	env_malloc(char **envp)
 	g_var.env[i] = NULL;
 }
 
-
-
 void	env_export(char **envp)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	i = 0;
 	len = 0;
 	while (envp[len])
 		len++;
 	g_var.export_size = len;
-	g_var.export = malloc(sizeof(char *) * (g_var.export_size + 1));
+	g_var.exports = malloc(sizeof(char *) * (g_var.export_size + 2));
 	while (envp[i])
 	{
-		g_var.export[i] = ft_strdup(envp[i]);
+		g_var.exports[i] = ft_strdup(envp[i]);
 		i++;
 	}
-	g_var.export[i] = NULL;
+	g_var.exports[i] = NULL;
 }
 
-void	null_init(void)
+void	null_init(int ac, char **av, char **envp)
 {
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigint_handler);
+	(void)ac;
+	(void)av;
+	g_var.exit_status = 0;
 	g_var.str = NULL;
 	g_var.env = NULL;
-	g_var.pwd_new = NULL;
-	g_var.export = NULL;
+	g_var.exports = NULL;
 	g_var.cmd = NULL;
+	g_var.cmds = NULL;
+	g_var.pipe = NULL;
+	g_var.pid = NULL;
+	g_var.help = NULL;
 	g_var.path_env = NULL;
-	g_var.pwd_new = NULL;
-	g_var.cont = NULL;
-}
-
-void	all_free(void)
-{
-	int i;
-
-	i = 0;   // pwd_new ve diğerleri freelenecek
-	if (g_var.str)
-		free_func(g_var.str);
-
-	
-}
-
-
-int main (int ac , char **av, char **envp)
-{
-    char	*mshell;
-	int i;
-	
-	null_init();
+	g_var.rdr_left = 1;
 	env_malloc(envp);
 	env_export(envp);
-    while (1)
-    {
-        mshell = readline("minishell $ ");
-		if(mshell == NULL)
-			break;
-        add_history(mshell);
-        start_parser(mshell);
-		command_prepare();
-		//control_char();
-		i = command_built();
-		if (i)
-		{
-			perror("aehgkjshıkghsKHGSDKHgaksdg");
-			path_splt();
-			perror("sıodhgalhsgıahs");
-			exec_init();
-		}
-		
-
-		//all_free();
-    }
 }
